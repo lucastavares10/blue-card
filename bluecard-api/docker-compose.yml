@@ -1,0 +1,15 @@
+services:
+  oracle-db:
+    image: gvenzl/oracle-free:23.8
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: oracle
+      APP_USER: bluecard
+      APP_USER_PASSWORD: bluecard123
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+
+volumes:
+  oracle-data:
