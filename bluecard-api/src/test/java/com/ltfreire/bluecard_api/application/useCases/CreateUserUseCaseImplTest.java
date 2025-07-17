@@ -3,6 +3,7 @@ package com.ltfreire.bluecard_api.application.useCases;
 import com.ltfreire.bluecard_api.application.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserResponseDTO;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.PasswordEncoderService;
 import com.ltfreire.bluecard_api.infra.entity.User;
 import com.ltfreire.bluecard_api.infra.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.*;
 class CreateUserUseCaseImplTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
-    private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+    private final PasswordEncoderService passwordEncoder = mock(PasswordEncoderService.class);
     private final CreateUserUseCaseImpl userUseCase = new CreateUserUseCaseImpl(userRepository, passwordEncoder);
 
     @Test

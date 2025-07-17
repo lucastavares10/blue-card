@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class UserController {
         this.createUserUseCase = createUserUseCase;
     }
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<?> register(@Valid @RequestBody CreateUserRequestDTO request) {
         try {
             CreateUserResponseDTO response = createUserUseCase.create(request);

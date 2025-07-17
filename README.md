@@ -1,12 +1,12 @@
 # Web BlueCard
 
-Sistema de Controle de Passagens e Cartões — um sistema interno fictício para empresa de bilhetagem eletrônica.
+Sistema de Gestão de Cartões e Passagens – Projeto fictício voltado ao controle de bilhetagem eletrônica, desenvolvido como exercício prático para consolidar conhecimentos em tecnologias Full Stack com Java, Vue e Oracle.
 
 ---
 
 ## 💡 Ideia do Projeto
 
-Web BlueCard é uma aplicação web para controle de bilhetagem eletrônica com funcionalidades para usuários e administradores, incluindo cadastro, autenticação, gerenciamento de cartões, recargas e histórico de transações.
+O Web BlueCard é uma aplicação web que simula um sistema interno para empresas de transporte, permitindo que usuários gerenciem seus cartões de passagem, realizem recargas e acompanhem o histórico de transações. Administradores têm acesso a painéis de controle com funcionalidades avançadas de gestão e validação.
 
 ---
 
@@ -15,15 +15,30 @@ Web BlueCard é uma aplicação web para controle de bilhetagem eletrônica com 
 ### Usuário (Cliente)
 
 - Criar conta e autenticar via JWT
-- Cadastrar e visualizar seus cartões
-- Solicitar recargas
-- Visualizar histórico de transações
+- Gerenciar seus cartões (cadastro, edição, remoção, visualização)
+- Solicitar recargas de saldo
+- Visualizar o histórico completo de transações
+- Acompanhar status de recarga (pendente, aprovada, recusada)
 
 ### Administrador
 
-- Gerenciar usuários (CRUD)
-- Validar recargas pendentes
-- Acompanhar uso dos cartões
+- Gerenciar usuários (CRUD completo)
+- Validar, aprovar ou recusar recargas pendentes
+- Consultar e auditar o uso de cartões por usuário
+- Acompanhar métricas básicas do sistema (número de cartões ativos, recargas mensais etc.)
+
+### Segurança
+
+- Autenticação com JWT e controle de acesso via Spring Security
+- Proteção de rotas por perfil de acesso (usuário ou administrador)
+- Frontend com guards de rota para sessões autenticadas
+
+### Funcionalidades adicionais:
+
+- Exportação de dados em CSV (histórico, usuários, recargas)
+- Dashboard com gráficos (Vue + Chart.js)
+- Logs de auditoria no backend (Spring AOP)
+- Integração de APIs externas simuladas para consulta de saldo ou blacklist de cartões
 
 ---
 
@@ -31,17 +46,38 @@ Web BlueCard é uma aplicação web para controle de bilhetagem eletrônica com 
 
 ### Frontend (`bluecard-fed`)
 
-- Vue 3
+- Vue 3 + TypeScript
 - Pinia (gerenciamento de estado)
-- TypeScript
+- Vue Router
+- Axios para consumo de APIs
+- Validações de formulário com Vuelidate
 
 ### Backend (`bluecard-api`)
 
-- Spring Boot
+- Java 17 + Spring Boot
 - Spring Security (com JWT)
+- JPA/Hibernate para persistência
 - Banco de Dados Oracle
-- JPA (Hibernate)
 - Flyway (migrations)
+- Maven para build e dependências
+
+---
+
+## 🧪 Testes e Boas Práticas
+
+- Código baseado em princípios SOLID e Clean Code
+- Separação clara entre camadas
+- Testes unitários com JUnit e Mockito
+- Versionamento com Git seguindo Git Flow
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+/bluecard-fed   # Frontend com Vue
+/bluecard-api   # Api Spring Boot
+```
 
 ---
 
@@ -75,23 +111,6 @@ Web BlueCard é uma aplicação web para controle de bilhetagem eletrônica com 
    npm run serve
    ```
 4. Acessar via navegador: `http://localhost:8080`
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-/bluecard-fed       # Frontend Vue 3 + Pinia + TS
-/bluecard-api       # Backend Spring Boot + Spring Security + JPA + Oracle DB + Flyway
-```
-
----
-
-## 🔐 Autenticação e Segurança
-
-- Backend utiliza JWT para autenticação de usuários.
-- Spring Security protege endpoints conforme papéis (usuário/admin).
-- Frontend implementa guardas de rota baseadas no estado da autenticação.
 
 ---
 

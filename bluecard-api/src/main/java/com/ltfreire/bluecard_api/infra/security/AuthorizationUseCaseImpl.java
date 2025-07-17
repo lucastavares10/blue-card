@@ -21,8 +21,6 @@ import org.springframework.security.core.Authentication;
 public class AuthorizationUseCaseImpl implements AuthorizationUseCase {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUseCase jwtUseCase;
 
     @Override
