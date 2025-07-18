@@ -20,6 +20,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -51,6 +52,8 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {return this.password;}
+    public String getPassword() {
+        return this.password;
+    }
 
 }

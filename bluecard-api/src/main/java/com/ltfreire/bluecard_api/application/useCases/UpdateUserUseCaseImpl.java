@@ -1,35 +1,32 @@
 package com.ltfreire.bluecard_api.application.useCases;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
-import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
+import com.ltfreire.bluecard_api.application.utils.NullPropertyUtils;
+import com.ltfreire.bluecard_api.domain.dto.user.UpdateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
-
 import com.ltfreire.bluecard_api.domain.interfaces.repository.IUserRepository;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.ICreateUserUseCase;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.IUpdateUserUseCase;
 import com.ltfreire.bluecard_api.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateUserUseCaseImpl implements ICreateUserUseCase {
+public class UpdateUserUseCaseImpl implements IUpdateUserUseCase {
 
     private final IUserRepository userRepository;
     private final IPasswordEncoderService passwordEncoder;
 
 
-    public UserResponseDTO create(CreateUserRequestDTO request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+    public UserResponseDTO update(String id, UpdateUserRequestDTO request) {
+        UserModel userModel = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (request.getPassword() != null) {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
-        UserModel userModel = UserModel.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole().equals(UserRole.ADMIN) ? UserRole.ADMIN : UserRole.CLIENT)
-                .build();
+        NullPropertyUtils.copyNonNullProperties(request, userModel);
 
         userModel = userRepository.save(userModel);
 

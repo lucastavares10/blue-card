@@ -1,10 +1,7 @@
 package com.ltfreire.bluecard_api.domain.interfaces.useCases.user;
 
-import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
-import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
-
-import java.util.ArrayList;
+import com.ltfreire.bluecard_api.domain.dto.user.ListUsersResponseDTO;
 
 public interface IListUsersUseCase {
-    ArrayList<UserResponseDTO> listUsers(CreateUserRequestDTO request);
+    ListUsersResponseDTO listUsers();
 }

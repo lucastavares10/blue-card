@@ -1,6 +1,7 @@
 package com.ltfreire.bluecard_api.presentation.controller;
 
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IAuthorizationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,18 +16,14 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthorizationController {
 
-    @Autowired
-    private final IAuthorizationService authUseCase;
-
-    public AuthorizationController(IAuthorizationService authUseCase) {
-        this.authUseCase = authUseCase;
-    }
+    private final IAuthorizationService authService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequestDTO request) {
-        AuthResponseDTO response = authUseCase.login(request);
+        AuthResponseDTO response = authService.login(request);
         return ResponseEntity.ok(response);
     }
 }
