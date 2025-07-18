@@ -2,42 +2,42 @@ package com.ltfreire.bluecard_api.application.useCases;
 
 import com.ltfreire.bluecard_api.application.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
-import com.ltfreire.bluecard_api.domain.dto.user.CreateUserResponseDTO;
+import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
 
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.PasswordEncoderService;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.CreateUserUseCase;
-import com.ltfreire.bluecard_api.infra.entity.User;
-import com.ltfreire.bluecard_api.infra.repository.UserRepository;
+import com.ltfreire.bluecard_api.domain.interfaces.repository.IUserRepository;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.ICreateUserUseCase;
+import com.ltfreire.bluecard_api.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateUserUseCaseImpl implements CreateUserUseCase {
+public class CreateUserUseCaseImpl implements ICreateUserUseCase {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoderService passwordEncoder;
+    private final IUserRepository userRepository;
+    private final IPasswordEncoderService passwordEncoder;
 
 
-    public CreateUserResponseDTO create(CreateUserRequestDTO request) {
+    public UserResponseDTO create(CreateUserRequestDTO request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email já cadastrado");
         }
 
-        User userEntity = User.builder()
+        UserModel userModel = UserModel.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole() == UserRole.ADMIN.toString() ? UserRole.ADMIN : UserRole.CLIENT)
+                .role(request.getRole().equals(UserRole.ADMIN.toString()) ? UserRole.ADMIN : UserRole.CLIENT)
                 .build();
 
-        userEntity = userRepository.save(userEntity);
+        userModel = userRepository.save(userModel);
 
-        return CreateUserResponseDTO.builder()
-                .id(userEntity.getId())
-                .name(userEntity.getName())
-                .email(userEntity.getEmail())
-                .role(userEntity.getRole())
+        return UserResponseDTO.builder()
+                .id(userModel.getId())
+                .name(userModel.getName())
+                .email(userModel.getEmail())
+                .role(userModel.getRole())
                 .build();
     }
 

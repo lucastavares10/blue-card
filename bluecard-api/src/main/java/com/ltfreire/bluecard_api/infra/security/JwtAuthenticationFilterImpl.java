@@ -1,7 +1,5 @@
 package com.ltfreire.bluecard_api.infra.security;
 
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.JwtUseCase;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.AuthorizationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +15,10 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilterImpl extends OncePerRequestFilter {
 
-    private final JwtUseCase jwtUseCase;
-    private final AuthorizationService authorizationService;
+    private final JwtServiceImpl jwtService;
+    private final UserDetailsServiceImpl authorizationService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -38,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         token = authHeader.substring(7);
-        email = jwtUseCase.validateToken(token);
+        email = jwtService.validateToken(token);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = authorizationService.loadUserByUsername(email);

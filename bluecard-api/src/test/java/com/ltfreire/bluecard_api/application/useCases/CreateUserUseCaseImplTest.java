@@ -2,21 +2,21 @@ package com.ltfreire.bluecard_api.application.useCases;
 
 import com.ltfreire.bluecard_api.application.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
-import com.ltfreire.bluecard_api.domain.dto.user.CreateUserResponseDTO;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.PasswordEncoderService;
+import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;
+import com.ltfreire.bluecard_api.domain.model.UserModel;
 import com.ltfreire.bluecard_api.infra.entity.User;
-import com.ltfreire.bluecard_api.infra.repository.UserRepository;
+import com.ltfreire.bluecard_api.infra.repository.UserRepositoryImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CreateUserUseCaseImplTest {
 
-    private final UserRepository userRepository = mock(UserRepository.class);
-    private final PasswordEncoderService passwordEncoder = mock(PasswordEncoderService.class);
-    private final CreateUserUseCaseImpl userUseCase = new CreateUserUseCaseImpl(userRepository, passwordEncoder);
+    private final UserRepositoryImpl userRepositoryImpl = mock(UserRepositoryImpl.class);
+    private final IPasswordEncoderService passwordEncoder = mock(IPasswordEncoderService.class);
+    private final CreateUserUseCaseImpl userUseCase = new CreateUserUseCaseImpl(userRepositoryImpl, passwordEncoder);
 
     @Test
     void deveCriarUsuarioComSucesso() {
@@ -26,10 +26,10 @@ class CreateUserUseCaseImplTest {
         request.setPassword("123456");
         request.setRole("CLIENT");
 
-        when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
+        when(userRepositoryImpl.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode("123456")).thenReturn("hashedPassword");
 
-        User savedUser = User.builder()
+        UserModel savedUser = UserModel.builder()
                 .id(123456789L)
                 .name(request.getName())
                 .email(request.getEmail())
@@ -37,17 +37,17 @@ class CreateUserUseCaseImplTest {
                 .role(UserRole.CLIENT)
                 .build();
 
-        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        when(userRepositoryImpl.save(any(UserModel.class))).thenReturn(savedUser);
 
 
-        CreateUserResponseDTO response = userUseCase.create(request);
+        UserResponseDTO response = userUseCase.create(request);
 
 
         assertNotNull(response);
         assertEquals("Lucas", response.getName());
         assertEquals("lucas@email.com", response.getEmail());
         assertEquals(UserRole.CLIENT, response.getRole());
-        verify(userRepository, times(1)).save(any(User.class));
+        verify(userRepositoryImpl, times(1)).save(any(UserModel.class));
     }
 
     @Test
@@ -55,13 +55,13 @@ class CreateUserUseCaseImplTest {
         CreateUserRequestDTO request = new CreateUserRequestDTO();
         request.setEmail("existente@email.com");
 
-        when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
+        when(userRepositoryImpl.existsByEmail(request.getEmail())).thenReturn(true);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             userUseCase.create(request);
         });
 
         assertEquals("Email já cadastrado", exception.getMessage());
-        verify(userRepository, never()).save(any());
+        verify(userRepositoryImpl, never()).save(any());
     }
 }

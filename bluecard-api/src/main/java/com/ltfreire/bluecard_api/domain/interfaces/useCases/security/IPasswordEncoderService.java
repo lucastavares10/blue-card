@@ -1,5 +1,5 @@
 package com.ltfreire.bluecard_api.domain.interfaces.useCases.security;
 
-public interface PasswordEncoderService {
+public interface IPasswordEncoderService {
     String encode(String rawPassword);
 }

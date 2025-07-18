@@ -1,6 +1,6 @@
 package com.ltfreire.bluecard_api.presentation.controller;
 
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.AuthorizationUseCase;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IAuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +18,9 @@ import jakarta.validation.Valid;
 public class AuthorizationController {
 
     @Autowired
-    private final AuthorizationUseCase authUseCase;
+    private final IAuthorizationService authUseCase;
 
-    public AuthorizationController(AuthorizationUseCase authUseCase) {
+    public AuthorizationController(IAuthorizationService authUseCase) {
         this.authUseCase = authUseCase;
     }
 

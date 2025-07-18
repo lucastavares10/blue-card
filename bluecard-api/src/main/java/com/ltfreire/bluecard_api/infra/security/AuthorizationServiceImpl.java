@@ -1,29 +1,42 @@
 package com.ltfreire.bluecard_api.infra.security;
 
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.AuthorizationService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import com.ltfreire.bluecard_api.domain.dto.security.AuthRequestDTO;
+import com.ltfreire.bluecard_api.domain.dto.security.AuthResponseDTO;
 
-import com.ltfreire.bluecard_api.infra.repository.UserRepository;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IAuthorizationService;
+import com.ltfreire.bluecard_api.infra.entity.User;
 
+
+import com.ltfreire.bluecard_api.infra.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorizationServiceImpl implements UserDetailsService, AuthorizationService {
+public class AuthorizationServiceImpl implements IAuthorizationService {
 
-    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtServiceImpl jwtService;
+    private final UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-    }
+    public AuthResponseDTO login(AuthRequestDTO request) {
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 
-    public boolean isEmailRegistered(String email) {
-        return userRepository.existsByEmail(email);
-    }
+        Authentication authentication = authenticationManager.authenticate(authToken);
 
+        var user = (User) authentication.getPrincipal();
+
+        var userModel = this.userMapper.entityToModel(user);
+
+        String token = jwtService.generateToken(userModel);
+
+        return AuthResponseDTO.builder()
+                .token(token)
+                .build();
+    }
 }

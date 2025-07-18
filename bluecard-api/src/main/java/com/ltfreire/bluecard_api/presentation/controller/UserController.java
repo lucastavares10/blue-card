@@ -1,8 +1,8 @@
 package com.ltfreire.bluecard_api.presentation.controller;
 
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
-import com.ltfreire.bluecard_api.domain.dto.user.CreateUserResponseDTO;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.CreateUserUseCase;
+import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.ICreateUserUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private final CreateUserUseCase createUserUseCase;
+    private final ICreateUserUseCase ICreateUserUseCase;
 
-    public UserController(CreateUserUseCase createUserUseCase) {
-        this.createUserUseCase = createUserUseCase;
+    public UserController(ICreateUserUseCase ICreateUserUseCase) {
+        this.ICreateUserUseCase = ICreateUserUseCase;
     }
 
     @PostMapping()
-    public ResponseEntity<?> register(@Valid @RequestBody CreateUserRequestDTO request) {
+    public ResponseEntity<?> create(@Valid @RequestBody CreateUserRequestDTO request) {
         try {
-            CreateUserResponseDTO response = createUserUseCase.create(request);
+            UserResponseDTO response = ICreateUserUseCase.create(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

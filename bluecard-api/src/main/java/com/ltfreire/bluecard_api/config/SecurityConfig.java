@@ -1,6 +1,6 @@
 package com.ltfreire.bluecard_api.config;
 
-import com.ltfreire.bluecard_api.infra.security.JwtAuthenticationFilter;
+import com.ltfreire.bluecard_api.infra.security.JwtAuthenticationFilterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +20,13 @@ public class SecurityConfig {
 
 
     @Autowired
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilterImpl jwtAuthenticationFilter;
 
     @Autowired
     private final CorsConfigurationSource corsConfigurationSource;
 
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CorsConfigurationSource corsConfigurationSource) {
+    public SecurityConfig(JwtAuthenticationFilterImpl jwtAuthenticationFilter, CorsConfigurationSource corsConfigurationSource) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.corsConfigurationSource = corsConfigurationSource;
     }
