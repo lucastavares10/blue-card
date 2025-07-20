@@ -25,52 +25,33 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> create(@Valid @RequestBody CreateUserRequestDTO request) {
-        try {
-            UserResponseDTO response = createUserUseCase.create(request);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        UserResponseDTO response = createUserUseCase.create(request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping()
     public ResponseEntity<?> list() {
-        try {
-            ListUsersResponseDTO response = this.listUsersUseCase.listUsers();
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        ListUsersResponseDTO response = this.listUsersUseCase.listUsers();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
-        try {
-            UserResponseDTO response = this.getUserByIdUseCase.getUserById(id);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        UserResponseDTO response = this.getUserByIdUseCase.getUserById(id);
+        return ResponseEntity.ok(response);
+
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody UpdateUserRequestDTO request, @PathVariable String id) {
-        try {
-            UserResponseDTO response = this.updateUserUseCase.update(id, request);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        UserResponseDTO response = this.updateUserUseCase.update(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        try {
-            this.deleteUserUseCase.delete(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        this.deleteUserUseCase.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }

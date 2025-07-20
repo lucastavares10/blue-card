@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IJwtService;
 import com.ltfreire.bluecard_api.domain.model.UserModel;
+import com.ltfreire.bluecard_api.domain.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -50,8 +51,7 @@ public class JwtServiceImpl implements IJwtService {
 
             return claimsJws.getPayload().getSubject();
         } catch (JwtException e) {
-            System.out.println("Token inválido: " + e.getMessage());
-            return null;
+            throw new InvalidTokenException("O token fornecido é inválido ou expirou." + e.getMessage());
         }
     }
 }

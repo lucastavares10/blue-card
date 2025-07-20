@@ -15,8 +15,8 @@ import { useRouter } from "vue-router";
 const auth = useAuthStore();
 const router = useRouter();
 
-const email = ref("");
-const password = ref("");
+const email = ref("freirelts@gmail.com");
+const password = ref("lucas@bluecard");
 const loading = ref(false);
 const error = ref("");
 
@@ -25,6 +25,7 @@ async function submit() {
   error.value = "";
   try {
     await auth.login(email.value, password.value);
+
     router.push(
       auth.user?.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard"
     );

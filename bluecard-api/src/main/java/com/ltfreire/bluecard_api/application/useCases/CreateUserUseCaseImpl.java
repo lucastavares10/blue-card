@@ -4,6 +4,7 @@ import com.ltfreire.bluecard_api.application.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
 
+import com.ltfreire.bluecard_api.domain.exception.EmailAlreadyExistsException;
 import com.ltfreire.bluecard_api.domain.interfaces.repository.IUserRepository;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.user.ICreateUserUseCase;
@@ -21,7 +22,7 @@ public class CreateUserUseCaseImpl implements ICreateUserUseCase {
 
     public UserResponseDTO create(CreateUserRequestDTO request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new EmailAlreadyExistsException("Email já cadastrado");
         }
 
         UserModel userModel = UserModel.builder()

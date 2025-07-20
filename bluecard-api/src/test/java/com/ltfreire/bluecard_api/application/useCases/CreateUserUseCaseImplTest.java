@@ -24,7 +24,7 @@ class CreateUserUseCaseImplTest {
         request.setName("Lucas");
         request.setEmail("lucas@email.com");
         request.setPassword("123456");
-        request.setRole("CLIENT");
+        request.setRole(UserRole.CLIENT);
 
         when(userRepositoryImpl.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode("123456")).thenReturn("hashedPassword");

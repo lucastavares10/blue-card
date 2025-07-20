@@ -25,7 +25,20 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "dashboard",
-        component: AdminDashboard,
+        component: () => import("@/pages/admin/AdminDashboard.vue"),
+      },
+      {
+        path: "users",
+        component: () => import("@/pages/admin/users/UserList.vue"),
+      },
+      {
+        path: "users/create",
+        component: () => import("@/pages/admin/users/UserForm.vue"),
+      },
+      {
+        path: "users/:id/edit",
+        component: () => import("@/pages/admin/users/UserForm.vue"),
+        props: true,
       },
     ],
   },
@@ -43,11 +56,7 @@ router.beforeEach((to, from, next) => {
     return next("/");
   }
 
-  if (
-    to.meta.role &&
-    auth.user?.role &&
-    auth.user.role === (to.meta.role as string)
-  ) {
+  if (to.meta.role && auth.user?.role && auth.user.role !== to.meta.role) {
     return next("/");
   }
 

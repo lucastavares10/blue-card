@@ -1,9 +1,9 @@
 <template>
   <div class="layout">
     <aside class="sidebar">
-      <h2>Web RioCard</h2>
+      <h2>Web BlueCard</h2>
       <nav>
-        <router-link to="/dashboard">Dashboard</router-link>
+        <router-link :to="dashboardLink">Dashboard</router-link>
         <router-link v-if="isAdmin" to="/admin/users">Usuários</router-link>
         <router-link to="/cards">Cartões</router-link>
         <router-link to="/recharges">Recargas</router-link>
@@ -32,6 +32,9 @@ const router = useRouter();
 
 const user = computed(() => auth.user);
 const isAdmin = computed(() => user.value?.role === "ADMIN");
+const dashboardLink = computed(() => {
+  return isAdmin.value ? "/admin/dashboard" : "/user/dashboard";
+});
 
 function logout() {
   auth.logout();

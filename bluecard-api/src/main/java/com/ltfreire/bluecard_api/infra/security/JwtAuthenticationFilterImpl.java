@@ -1,5 +1,7 @@
 package com.ltfreire.bluecard_api.infra.security;
 
+import com.ltfreire.bluecard_api.infra.exceptions.ExceptionResponseWriter;
+import com.ltfreire.bluecard_api.domain.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,20 +38,28 @@ public class JwtAuthenticationFilterImpl extends OncePerRequestFilter {
         }
 
         token = authHeader.substring(7);
-        email = jwtService.validateToken(token);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = authorizationService.loadUserByUsername(email);
+        try {
 
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities());
+            email = jwtService.validateToken(token);
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = authorizationService.loadUserByUsername(email);
+
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (InvalidTokenException ex) {
+            ExceptionResponseWriter.writeError(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized", ex.getMessage());
         }
 
-        filterChain.doFilter(request, response);
     }
+
 }
