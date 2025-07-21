@@ -1,11 +1,11 @@
 package com.ltfreire.bluecard_api.application.useCases;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
+import com.ltfreire.bluecard_api.application.useCases.user.CreateUserUseCaseImpl;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
+import com.ltfreire.bluecard_api.domain.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;
 import com.ltfreire.bluecard_api.domain.model.UserModel;
-import com.ltfreire.bluecard_api.infra.entity.User;
 import com.ltfreire.bluecard_api.infra.repository.UserRepositoryImpl;
 import org.junit.jupiter.api.Test;
 

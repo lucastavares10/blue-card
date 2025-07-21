@@ -26,12 +26,18 @@
         <input v-model="form.password" required type="password" />
       </div>
       <div class="actions">
-        <button type="submit" class="btn btn-save">
-          <i class="fa-solid fa-save"></i> {{ isEdit ? "Atualizar" : "Salvar" }}
-        </button>
-        <button type="button" class="btn btn-cancel" @click="goBack">
-          <i class="fa-solid fa-arrow-left"></i> Cancelar
-        </button>
+        <BaseButton type="submit" variant="primary" icon="fa-solid fa-save">
+          {{ isEdit ? "Atualizar" : "Salvar" }}
+        </BaseButton>
+
+        <BaseButton
+          type="button"
+          variant="secondary"
+          icon="fa-solid fa-arrow-left"
+          @click="goBack"
+        >
+          Cancelar
+        </BaseButton>
       </div>
     </form>
   </div>
@@ -42,6 +48,7 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "@/services/api";
 import { useToast } from "vue-toastification";
+import BaseButton from "@/components/common/BaseButton.vue";
 
 interface UserForm {
   name: string;
@@ -97,76 +104,5 @@ onMounted(fetchUser);
 </script>
 
 <style scoped>
-.form-container {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  max-width: 450px;
-  margin: 0 auto;
-}
-
-h1 {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
-label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #444;
-}
-
-input,
-select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border-color 0.3s;
-}
-
-input:focus,
-select:focus {
-  border-color: #42b983;
-  outline: none;
-}
-
-.actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-.btn-save {
-  background-color: #42b983;
-  color: white;
-}
-
-.btn-cancel {
-  background-color: #e63946;
-  color: white;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
+@import "@/styles/form.css";
 </style>

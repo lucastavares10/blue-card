@@ -83,25 +83,6 @@ onMounted(fetchUsers);
 </script>
 
 <style scoped>
-.user-container {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-h1 {
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.empty-msg {
-  color: #888;
-  font-style: italic;
-  margin-top: 1rem;
-}
+@import "@/styles/form.css";
+@import "@/styles/table.css";
 </style>

@@ -1,9 +1,9 @@
-package com.ltfreire.bluecard_api.application.useCases;
+package com.ltfreire.bluecard_api.application.useCases.user;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.UserResponseDTO;
 
+import com.ltfreire.bluecard_api.domain.enums.UserRole;
 import com.ltfreire.bluecard_api.domain.exception.EmailAlreadyExistsException;
 import com.ltfreire.bluecard_api.domain.interfaces.repository.IUserRepository;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.security.IPasswordEncoderService;

@@ -2,19 +2,17 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/store/auth";
 import LoginPage from "@/pages/LoginPage.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-import UserDashboard from "@/pages/user/UserDashboard.vue";
-import AdminDashboard from "@/pages/admin/AdminDashboard.vue";
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", component: LoginPage },
   {
-    path: "/user",
+    path: "/client",
     component: BaseLayout,
-    meta: { requiresAuth: true, role: "USER" },
+    meta: { requiresAuth: true, role: "CLIENT" },
     children: [
       {
         path: "dashboard",
-        component: UserDashboard,
+        component: () => import("@/pages/dashboards/ClientDashboard.vue"),
       },
     ],
   },
@@ -25,20 +23,24 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "dashboard",
-        component: () => import("@/pages/admin/AdminDashboard.vue"),
+        component: () => import("@/pages/dashboards/AdminDashboard.vue"),
       },
       {
         path: "users",
-        component: () => import("@/pages/admin/users/UserList.vue"),
+        component: () => import("@/pages/users/UserList.vue"),
       },
       {
         path: "users/create",
-        component: () => import("@/pages/admin/users/UserForm.vue"),
+        component: () => import("@/pages/users/UserForm.vue"),
       },
       {
         path: "users/:id/edit",
-        component: () => import("@/pages/admin/users/UserForm.vue"),
+        component: () => import("@/pages/users/UserForm.vue"),
         props: true,
+      },
+      {
+        path: "cards",
+        component: () => import("@/pages/cards/CardsList.vue"),
       },
     ],
   },

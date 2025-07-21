@@ -3,7 +3,7 @@ package com.ltfreire.bluecard_api.infra.entity;
 import java.util.Collection;
 import java.util.List;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
+import com.ltfreire.bluecard_api.domain.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

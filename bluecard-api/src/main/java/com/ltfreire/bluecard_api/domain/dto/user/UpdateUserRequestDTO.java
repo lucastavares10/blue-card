@@ -1,6 +1,6 @@
 package com.ltfreire.bluecard_api.domain.dto.user;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
+import com.ltfreire.bluecard_api.domain.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

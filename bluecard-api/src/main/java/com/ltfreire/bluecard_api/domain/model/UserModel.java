@@ -1,6 +1,6 @@
 package com.ltfreire.bluecard_api.domain.model;
 
-import com.ltfreire.bluecard_api.application.enums.UserRole;
+import com.ltfreire.bluecard_api.domain.enums.UserRole;
 import lombok.*;
 
 @Getter

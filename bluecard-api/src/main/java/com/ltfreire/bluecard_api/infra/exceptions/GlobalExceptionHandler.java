@@ -2,6 +2,7 @@ package com.ltfreire.bluecard_api.infra.exceptions;
 
 import com.ltfreire.bluecard_api.domain.exception.InvalidTokenException;
 import com.ltfreire.bluecard_api.domain.exception.EmailAlreadyExistsException;
+import com.ltfreire.bluecard_api.domain.exception.EntityNotFoundException;
 import com.ltfreire.bluecard_api.domain.utils.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ApiError> handleEmailAlreadyExistsException(Exception ex, WebRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Email em uso", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiError> notFoundException(Exception ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Entidade não encontrada", ex.getMessage(), request);
     }
 
 

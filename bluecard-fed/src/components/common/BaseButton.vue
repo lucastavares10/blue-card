@@ -1,5 +1,9 @@
 <template>
-  <button :class="['base-btn', `base-btn--${variant}`]" @click="$emit('click')">
+  <button
+    :type="type"
+    :class="['base-btn', `base-btn--${variant}`]"
+    @click="$emit('click')"
+  >
     <i v-if="icon" :class="icon"></i>
     <slot />
   </button>
@@ -11,6 +15,7 @@ import { defineProps } from "vue";
 defineProps<{
   variant?: "primary" | "secondary" | "danger";
   icon?: string;
+  type?: "button" | "submit" | "reset";
 }>();
 </script>
 

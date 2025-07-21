@@ -1,4 +1,4 @@
-package com.ltfreire.bluecard_api.application.useCases;
+package com.ltfreire.bluecard_api.application.useCases.user;
 
 import com.ltfreire.bluecard_api.domain.dto.user.CreateUserRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.user.ListUsersResponseDTO;

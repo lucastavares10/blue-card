@@ -15,10 +15,3 @@ import { useAuthStore } from "@/store/auth";
 const auth = useAuthStore();
 const user = computed(() => auth.user);
 </script>
-
-<style scoped>
-h1 {
-  margin-bottom: 1rem;
-  color: #333;
-}
-</style>

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import * as jwtDecode from "jwt-decode";
 
 interface User {
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -15,6 +16,7 @@ interface AuthState {
 
 interface JwtPayload {
   sub: string;
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -35,8 +37,9 @@ export const useAuthStore = defineStore("auth", {
       const decoded = jwtDecode.jwtDecode<JwtPayload>(this.token);
 
       this.user = {
+        id: decoded.id,
         name: decoded.name,
-        email: decoded.sub,
+        email: decoded.email,
         role: decoded.role,
       };
     },
