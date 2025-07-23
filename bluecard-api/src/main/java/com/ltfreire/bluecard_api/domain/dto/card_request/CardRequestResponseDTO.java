@@ -1,4 +1,4 @@
-package com.ltfreire.bluecard_api.domain.dto.card;
+package com.ltfreire.bluecard_api.domain.dto.card_request;
 
 import com.ltfreire.bluecard_api.domain.enums.CardRequestStatus;
 import lombok.Builder;

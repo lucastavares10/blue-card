@@ -94,11 +94,11 @@ O Web BlueCard é uma aplicação web que simula um sistema interno para empresa
 
 ### Diagrama de Classes
 
-![Diagrama de Classes](.github/BlueCard - ClassDiagram.drawio.png)
+![Diagrama de Classes](.github/class-diagram.png)
 
 ### Diagrama Entidade-Relacionamento
 
-![Diagrama ER](.github/BBlueCard - EntityRelationDiagram.drawio.png)
+![Diagrama ER](.github/entity-relation.png)
 
 ---
 

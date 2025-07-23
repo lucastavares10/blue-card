@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "cards",
-        component: () => import("@/pages/cards/CardsList.vue"),
+        component: () => import("@/pages/cards/CardsPage.vue"),
       },
     ],
   },
@@ -44,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "cards",
-        component: () => import("@/pages/cards/CardsList.vue"),
+        component: () => import("@/pages/cards/CardsPage.vue"),
       },
     ],
   },

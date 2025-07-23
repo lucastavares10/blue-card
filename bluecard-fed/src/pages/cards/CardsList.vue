@@ -17,7 +17,7 @@
       </BaseButton>
     </div>
 
-    <table>
+    <table v-if="cards.length > 0">
       <thead>
         <tr>
           <th>Número</th>
@@ -48,6 +48,8 @@
         </tr>
       </tbody>
     </table>
+
+    <p v-else class="empty-msg">Nenhum cartão encontrado.</p>
   </div>
 </template>
 
@@ -62,7 +64,7 @@ interface Card {
   id: number;
   cardNumber: string;
   balance: number;
-  status: "ACTIVE" | "BLOCKED" | "PENDING_VALIDATION";
+  status: "ACTIVE" | "BLOCKED";
   ownerId: number;
 }
 
@@ -75,11 +77,9 @@ const isClient = computed(() => auth.user?.role === "CLIENT");
 const badgeClass = (status: string) => {
   switch (status) {
     case "ACTIVE":
-      return "badge-success";
+      return "badge-active";
     case "BLOCKED":
-      return "badge-danger";
-    case "PENDING_VALIDATION":
-      return "badge-pending";
+      return "badge-blocked";
     default:
       return "";
   }
@@ -91,8 +91,6 @@ const badgeText = (status: string) => {
       return "Ativo";
     case "BLOCKED":
       return "Bloqueado";
-    case "PENDING_VALIDATION":
-      return "Pendente de Validação";
     default:
       return "";
   }
@@ -122,13 +120,16 @@ function formatCardNumber(cardNumber: string) {
   return cardNumber.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
 }
 
-function requestNewCard() {
-  //função para solicitar um novo cartão
-  toast.info(
-    "Funcionalidade de solicitação de novo cartão ainda não implementada."
-  );
-
-  return;
+async function requestNewCard() {
+  try {
+    await api.post(`/card-request`, {
+      ownerId: auth.user?.id,
+    });
+    toast.success("Solicitação de novo cartão realizada com sucesso");
+    fetchCards();
+  } catch {
+    toast.error("Erro ao solicitar novo cartão");
+  }
 }
 
 onMounted(fetchCards);

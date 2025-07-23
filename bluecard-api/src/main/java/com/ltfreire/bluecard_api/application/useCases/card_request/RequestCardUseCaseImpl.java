@@ -1,12 +1,12 @@
-package com.ltfreire.bluecard_api.application.useCases.card;
+package com.ltfreire.bluecard_api.application.useCases.card_request;
 
-import com.ltfreire.bluecard_api.domain.dto.card.CardRequestResponseDTO;
-import com.ltfreire.bluecard_api.domain.dto.card.CardRequestDTO;
+import com.ltfreire.bluecard_api.domain.dto.card_request.CardRequestResponseDTO;
+import com.ltfreire.bluecard_api.domain.dto.card_request.CardRequestDTO;
 import com.ltfreire.bluecard_api.domain.enums.CardRequestStatus;
 import com.ltfreire.bluecard_api.domain.exception.EntityNotFoundException;
 import com.ltfreire.bluecard_api.domain.interfaces.repository.ICardRequestRepository;
 import com.ltfreire.bluecard_api.domain.interfaces.repository.IUserRepository;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.card.IRequestCardUseCase;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.card_request.IRequestCardUseCase;
 import com.ltfreire.bluecard_api.domain.model.CardRequestModel;
 import com.ltfreire.bluecard_api.domain.model.UserModel;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class RequestCardUseCaseImpl implements IRequestCardUseCase {
 
         CardRequestModel cardRequest = CardRequestModel.builder()
                 .ownerId(Long.valueOf(request.getOwnerId()))
-                .reason("Request initiated")
+                .reason("Requisição iniciada")
                 .status(CardRequestStatus.PENDING)
                 .build();
 
