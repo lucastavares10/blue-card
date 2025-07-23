@@ -1,10 +1,11 @@
 package com.ltfreire.bluecard_api.presentation.controller;
 
+import com.ltfreire.bluecard_api.domain.dto.card.CardRequestResponseDTO;
 import com.ltfreire.bluecard_api.domain.dto.card.CardResponseDTO;
 import com.ltfreire.bluecard_api.domain.dto.card.CardRequestDTO;
 import com.ltfreire.bluecard_api.domain.dto.card.ListCardsResponseDTO;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.card.IBlockCardUseCase;
-import com.ltfreire.bluecard_api.domain.interfaces.useCases.card.ICreateCardUseCase;
+import com.ltfreire.bluecard_api.domain.interfaces.useCases.card.IRequestCardUseCase;
 import com.ltfreire.bluecard_api.domain.interfaces.useCases.card.IListCardsUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CardController {
 
-    private final ICreateCardUseCase createCardUseCase;
+    private final IRequestCardUseCase requestCardUseCase;
     private final IBlockCardUseCase blockCardUseCase;
     private final IListCardsUseCase listCardsUseCase;
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody CardRequestDTO request) {
-        CardResponseDTO response = createCardUseCase.create(request);
+    public ResponseEntity<?> request(@Valid @RequestBody CardRequestDTO request) {
+        CardRequestResponseDTO response = requestCardUseCase.request(request);
         return ResponseEntity.ok(response);
     }
 

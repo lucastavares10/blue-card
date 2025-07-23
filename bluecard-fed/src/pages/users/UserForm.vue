@@ -82,7 +82,7 @@ async function fetchUser() {
 async function saveUser() {
   try {
     if (isEdit.value) {
-      await api.put(`/user/${route.params.id}`, form.value);
+      await api.patch(`/user/${route.params.id}`, form.value);
       toast.success("Usuário atualizado com sucesso");
     } else {
       await api.post("/user", form.value);

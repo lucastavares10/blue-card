@@ -7,10 +7,11 @@
       </h1>
 
       <BaseButton
-        v-if="isAdmin"
+        v-if="isClient"
         variant="primary"
         icon="fa-solid fa-plus"
-        @click="goToNewCard"
+        type="button"
+        @click="requestNewCard"
       >
         Solicitar Novo Cartão
       </BaseButton>
@@ -27,21 +28,16 @@
       </thead>
       <tbody>
         <tr v-for="card in cards" :key="card.id">
-          <td>{{ card.cardNumber }}</td>
+          <td>{{ formatCardNumber(card.cardNumber) }}</td>
           <td>R$ {{ card.balance.toFixed(2) }}</td>
           <td>
-            <span
-              :class="[
-                'badge',
-                card.status === 'BLOCKED' ? 'badge-blocked' : 'badge-active',
-              ]"
-            >
-              {{ card.status === "BLOCKED" ? "Bloqueado" : "Ativo" }}
+            <span :class="['badge', badgeClass(card.status)]">
+              {{ badgeText(card.status) }}
             </span>
           </td>
           <td v-if="isAdmin">
             <BaseButton
-              v-if="card.status === 'BLOCKED'"
+              v-if="card.status === 'ACTIVE'"
               variant="danger"
               icon="fa-solid fa-ban"
               @click="blockCard(card.id)"
@@ -60,22 +56,47 @@ import { ref, onMounted, computed } from "vue";
 import api from "@/services/api";
 import { useAuthStore } from "@/store/auth";
 import { useToast } from "vue-toastification";
-import { useRouter } from "vue-router";
 import BaseButton from "@/components/common/BaseButton.vue";
 
 interface Card {
   id: number;
   cardNumber: string;
   balance: number;
-  status: "ACTIVE" | "BLOCKED";
+  status: "ACTIVE" | "BLOCKED" | "PENDING_VALIDATION";
   ownerId: number;
 }
 
 const cards = ref<Card[]>([]);
 const auth = useAuthStore();
 const toast = useToast();
-const router = useRouter();
 const isAdmin = computed(() => auth.user?.role === "ADMIN");
+const isClient = computed(() => auth.user?.role === "CLIENT");
+
+const badgeClass = (status: string) => {
+  switch (status) {
+    case "ACTIVE":
+      return "badge-success";
+    case "BLOCKED":
+      return "badge-danger";
+    case "PENDING_VALIDATION":
+      return "badge-pending";
+    default:
+      return "";
+  }
+};
+
+const badgeText = (status: string) => {
+  switch (status) {
+    case "ACTIVE":
+      return "Ativo";
+    case "BLOCKED":
+      return "Bloqueado";
+    case "PENDING_VALIDATION":
+      return "Pendente de Validação";
+    default:
+      return "";
+  }
+};
 
 async function fetchCards() {
   try {
@@ -96,7 +117,17 @@ async function blockCard(id: number) {
   }
 }
 
-function goToNewCard() {
+function formatCardNumber(cardNumber: string) {
+  if (!cardNumber) return "";
+  return cardNumber.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+}
+
+function requestNewCard() {
+  //função para solicitar um novo cartão
+  toast.info(
+    "Funcionalidade de solicitação de novo cartão ainda não implementada."
+  );
+
   return;
 }
 

@@ -10,6 +10,72 @@ services:
       APP_USER_PASSWORD: bluecard123
     volumes:
       - oracle-data:/opt/oracle/oradata
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/oracle@//localhost:1521/FREEPDB1 || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kafka:
+    image: apache/kafka:latest
+    ports:
+      - 9092:9092
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: api
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - app-network
+    command: [ "mvn", "spring-boot:run" ]
+
+  frontend:
+    build:
+      context: ../bluecard-fed
+      dockerfile: Dockerfile.dev
+    container_name: fed
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../bluecard-fed:/app
+      - /app/node_modules
+    depends_on:
+      - app
+    networks:
+      - app-network
 
 volumes:
   oracle-data:
+
+networks:
+  app-network:
+    driver: bridge

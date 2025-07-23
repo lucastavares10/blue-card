@@ -48,6 +48,11 @@ td {
   color: white;
 }
 
+.badge-pending {
+  background-color: #ffc107; /* amarelo */
+  color: #000;
+}
+
 .empty-msg {
   color: #888;
   font-style: italic;

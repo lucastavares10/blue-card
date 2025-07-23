@@ -1,9 +1,5 @@
 <template>
-  <button
-    :type="type"
-    :class="['base-btn', `base-btn--${variant}`]"
-    @click="$emit('click')"
-  >
+  <button :type="type" :class="['base-btn', `base-btn--${variant}`]">
     <i v-if="icon" :class="icon"></i>
     <slot />
   </button>
@@ -16,6 +12,7 @@ defineProps<{
   variant?: "primary" | "secondary" | "danger";
   icon?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }>();
 </script>
 

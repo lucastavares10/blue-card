@@ -5,8 +5,8 @@
       <nav>
         <router-link :to="dashboardLink">Dashboard</router-link>
         <router-link v-if="isAdmin" to="/admin/users">Usuários</router-link>
-        <router-link to="/admin/cards">Cartões</router-link>
-        <router-link to="/admin/recharges">Recargas</router-link>
+        <router-link :to="cardsLink">Cartões</router-link>
+        <router-link :to="rechargeLink">Recargas</router-link>
       </nav>
     </aside>
 
@@ -32,8 +32,17 @@ const router = useRouter();
 
 const user = computed(() => auth.user);
 const isAdmin = computed(() => user.value?.role === "ADMIN");
+
 const dashboardLink = computed(() => {
   return isAdmin.value ? "/admin/dashboard" : "/client/dashboard";
+});
+
+const cardsLink = computed(() => {
+  return isAdmin.value ? "/admin/cards" : "/client/cards";
+});
+
+const rechargeLink = computed(() => {
+  return isAdmin.value ? "/admin/recharges" : "/client/recharges";
 });
 
 function logout() {
